@@ -1,3 +1,4 @@
+/*
 The MIT License (MIT)
 
 Copyright (c) 2014 Jordan Wright
@@ -19,4 +20,19 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+*/
 
+#ifndef ST7036I_H
+#define ST7036I_H
+
+#include <avr/io.h>
+#include <avr/iom168.h>
+
+#include "types.h"
+
+void disp_init();
+void disp_setpos(uint8 row, uint8 col);
+void disp_putc(uint8 byte);
+void disp_puts(uint8 *array);
+
+#endif /* ST7036I_H */

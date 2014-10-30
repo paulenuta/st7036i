@@ -1,3 +1,4 @@
+/*
 The MIT License (MIT)
 
 Copyright (c) 2014 Jordan Wright
@@ -19,4 +20,42 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+*/
 
+#include <avr/io.h>
+#include <avr/iom168.h>
+
+#include "types.h"
+#include "i2c.h"
+
+/* Generic support library for I2C */
+/* Support library for the ST7036i chipset using a 2x20 display */
+
+void i2c_init()
+{
+    // Set clock rate generator to 100kHz with master clock at 8 MHz
+    // SCL freq = master clock / (16 + 2(TWBR)*(Prescaler))
+    TWBR = 8;
+    TWSR |= (0 << TWPS1) | (1 << TWPS0); // Prescaler of 4
+}
+
+void i2c_send(uint8 byte)
+{
+    TWDR = byte;
+    TWCR = (1 << TWINT) | (1 << TWEN);
+    while (!(TWCR & (1 << TWINT)));
+}
+
+
+void i2c_send_start()
+{
+    // Enable TWI system, send start condition
+    TWCR = (1 << TWINT) | (1 << TWSTA) | (1 << TWEN);
+    while (!(TWCR & (1 << TWINT))) ;    
+}
+
+void i2c_send_stop()
+{
+    // Enable TWI system, send stop condition
+    TWCR = (1 << TWINT) | (1 << TWSTO) | (1 << TWEN);
+}

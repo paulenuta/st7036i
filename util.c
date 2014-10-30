@@ -1,3 +1,4 @@
+/*
 The MIT License (MIT)
 
 Copyright (c) 2014 Jordan Wright
@@ -19,4 +20,25 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+*/
 
+#include <avr/io.h>
+#include <avr/iom168.h>
+
+#include "types.h"
+#include "util.h"
+
+void delay_ms(uint16 count)
+{
+    uint16 i;
+    uint16 loop1;
+    uint8 loop2;
+    
+    for (i = 0; i < count; ++i) {
+        for (loop1 = 0; loop1 < 1000; ++loop1) {
+            for (loop2 = 0; loop2 < 2; ++loop2) {
+                asm("nop");
+            }
+        }
+    }
+}
