@@ -30,6 +30,9 @@ SOFTWARE.
 #include "i2c.h"
 #include "st7036i.h"
 
+uint8 st7036_Cursor = FALSE;
+uint8 st7036_Blink = TRUE;
+
 void disp_init()
 {
     i2c_send_start();
@@ -49,7 +52,72 @@ void disp_init()
     delay_ms(2);
     i2c_send_stop();
     delay_ms(10);
- }
+
+    disp_on();
+}
+
+void disp_on()
+{
+    uint8 byte = 0x0C;
+
+    if (st7036_Cursor == TRUE)
+        byte |= 0b10;
+    if (st7036_Blink == TRUE)
+        byte |= 0b1;
+
+    i2c_send_start();
+    i2c_send(0x78); 
+    i2c_send(0x00);
+    i2c_send(byte);    
+    i2c_send_stop();
+    delay_ms(10);
+}
+
+void disp_off()
+{
+    i2c_send_start();
+    i2c_send(0x78); 
+    i2c_send(0x00);
+    i2c_send(0x08);    
+    i2c_send_stop();
+    delay_ms(10);
+}
+
+void disp_clear()
+{
+    i2c_send_start();
+    i2c_send(0x78); 
+    i2c_send(0x00);
+    i2c_send(0x01);    
+    i2c_send_stop();
+    delay_ms(10);
+}
+
+void disp_home()
+{
+    i2c_send_start();
+    i2c_send(0x78); 
+    i2c_send(0x00);
+    i2c_send(0x02);    
+    i2c_send_stop();
+    delay_ms(10);
+}
+
+void disp_cursor(uint8 status)
+{
+    if (status == 0)
+        st7036_Cursor = FALSE;
+    else
+        st7036_Cursor = TRUE;
+}
+
+void disp_blink(uint8 status)
+{
+    if (status == 0)
+        st7036_Blink = FALSE;
+    else
+        st7036_Blink = TRUE;
+}
 
 void disp_setpos(uint8 row, uint8 col)
 {

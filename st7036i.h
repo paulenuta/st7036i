@@ -31,6 +31,13 @@ SOFTWARE.
 #include "types.h"
 
 void disp_init();
+void disp_on();
+void disp_off();
+void disp_cursor(uint8 status);
+void disp_blink(uint8 status);
+void disp_clear();
+void disp_home();
+void disp_shiftcursor(uint8 direction);
 void disp_setpos(uint8 row, uint8 col);
 void disp_putc(uint8 byte);
 void disp_puts(uint8 *array);
